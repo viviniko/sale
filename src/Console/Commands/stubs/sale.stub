@@ -1,0 +1,165 @@
+<?php
+
+use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
+
+class CreateSaleTable extends Migration
+{
+    /**
+     * @var string
+     */
+    protected $ordersTable;
+
+    /**
+     * @var string
+     */
+    protected $orderProductsTable;
+
+    /**
+     * @var string
+     */
+    protected $orderAddressesTable;
+
+    /**
+     * @var string
+     */
+    protected $orderShippingTable;
+
+    /**
+     * @var string
+     */
+    protected $orderVisitorsTable;
+
+    /**
+     * @var string
+     */
+    protected $orderStatusHistoriesTable;
+
+    /**
+     * CreateSaleTable constructor.
+     */
+    public function __construct()
+    {
+        $this->ordersTable = Config::get('sale.orders_table');
+        $this->orderProductsTable = Config::get('sale.order_products_table');
+        $this->orderAddressesTable = Config::get('sale.order_addresses_table');
+        $this->orderShippingTable = Config::get('sale.order_shipping_table');
+        $this->orderVisitorsTable = Config::get('sale.order_visitors_table');
+        $this->orderStatusHistoriesTable = Config::get('sale.order_status_histories_table');
+    }
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        // Create table for storing orders
+        Schema::create($this->ordersTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->char('order_sn', 20);
+            $table->string('status', 32);
+            $table->string('payment_status', 32)->nullable();
+            $table->string('payment_method', 32)->nullable();
+            $table->string('coupon_code', 32)->nullable();
+            $table->decimal('subtotal', 16, 4);
+            $table->decimal('shipping_amount', 16, 4)->default(0);
+            $table->decimal('discount_amount', 16, 4)->default(0);
+            $table->decimal('grand_total', 16, 4);
+            $table->decimal('total_paid', 16, 4)->default(0);
+            $table->unsignedInteger('customer_id')->default(0);
+            $table->string('customer_email')->nullable();
+            $table->string('customer_firstname')->nullable();
+            $table->string('customer_lastname')->nullable();
+            $table->string('customer_note', 765)->nullable();
+            $table->string('referer')->nullable();
+            $table->string('remote_ip', '64');
+            $table->string('invoice_number')->nullable();
+            $table->timestamps();
+
+            $table->unique('order_sn');
+        });
+
+        // Create table for storing orders
+        Schema::create($this->orderProductsTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('order_id');
+            $table->unsignedInteger('product_id');
+            $table->string('name');
+            $table->string('sku', 32);
+            $table->decimal('price', 16, 4);
+            $table->decimal('market_price', 16, 4);
+            $table->unsignedSmallInteger('quantity');
+            $table->string('description');
+            $table->text('attrs');
+        });
+
+        // Create table for storing orders
+        Schema::create($this->orderAddressesTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('order_id');
+            $table->string('name');
+            $table->string('street1');
+            $table->string('street2')->nullable();
+            $table->string('city_name', 120);
+            $table->string('state_name', 120)->nullable();
+            $table->string('country_code', 2);
+            $table->string('country_name', 120);
+            $table->string('phone', 32);
+            $table->string('postal_code', 20);
+        });
+
+        // Create table for storing orders
+        Schema::create($this->orderShippingTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('order_id');
+            $table->unsignedInteger('shipping_method_id');
+            $table->unsignedInteger('shipping_country_id');
+            $table->decimal('shipping_weight', 16, 2);
+            $table->decimal('shipping_cost', 16, 4);
+        });
+
+        // Create table for storing orders
+        Schema::create($this->orderVisitorsTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('order_id');
+            $table->string('ip', 64);
+            $table->string('location', 128);
+            $table->string('user_agent');
+            $table->string('os', 32);
+            $table->string('browser', 32);
+            $table->string('lang', 64);
+            $table->string('referer');
+        });
+
+        // Create table for storing orders
+        Schema::create($this->orderStatusHistoriesTable, function (Blueprint $table) {
+            $table->increments('id');
+            $table->unsignedInteger('order_id');
+            $table->string('status', 32);
+            $table->text('comment');
+            $table->string('logger', 64);
+            $table->unsignedTinyInteger('log_level')->default(0);
+            $table->timestamp('created_at');
+        });
+
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists($this->ordersTable);
+        Schema::dropIfExists($this->orderProductsTable);
+        Schema::dropIfExists($this->orderAddressesTable);
+        Schema::dropIfExists($this->orderShippingTable);
+        Schema::dropIfExists($this->orderVisitorsTable);
+        Schema::dropIfExists($this->orderStatusHistoriesTable);
+    }
+}

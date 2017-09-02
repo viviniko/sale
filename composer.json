@@ -1,0 +1,29 @@
+{
+    "name": "viviniko/sale",
+    "description": "VIVINIKO Sale Service Provider",
+	"keywords": ["viviniko", "sale", "laravel"],
+	"homepage": "http://viviniko.com",
+	"license": "MIT",
+	"authors": [
+        {
+            "name": "viviniko",
+            "email": "viviniko.shop@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "viviniko/address": "dev-master",
+        "viviniko/catalog": "dev-master",
+        "viviniko/cart": "dev-master",
+        "viviniko/agent": "dev-master",
+        "viviniko/mail": "dev-master",
+        "viviniko/shipping": "dev-master"
+    },
+	"autoload": {
+        "psr-0": {
+            "Viviniko\\Sale": "src"
+        }
+    },
+    "minimum-stability": "dev",
+	"prefer-stable": true
+}
