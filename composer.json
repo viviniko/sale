@@ -19,11 +19,11 @@
         "viviniko/mail": "dev-master",
         "viviniko/shipping": "dev-master"
     },
-	"autoload": {
+    "autoload": {
         "psr-0": {
             "Viviniko\\Sale": "src"
         }
     },
     "minimum-stability": "dev",
-	"prefer-stable": true
+    "prefer-stable": true
 }

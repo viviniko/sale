@@ -96,12 +96,25 @@ class OrderServiceImpl implements OrderServiceInterface
         }
 
         DB::transaction(function () use (&$order, $items, $address, $data) {
+            $shippingData = [
+                'shipping_method_id' => 0,
+                'shipping_country_id' => $address->country_id,
+                'shipping_weight' => $items->total_weight,
+                'shipping_cost' => 0,
+            ];
+            if (isset($data['shipping_method_id'])) {
+                $shippingData['shipping_method_id'] = $data['shipping_method_id'];
+                $shippingData['shipping_cost'] = $this->shippingService->getShippingAmount($shippingData['shipping_method_id'], $shippingData['shipping_country_id'], $items->total_weight);
+            }
+
+            $items->setShippingAmount($shippingData['shipping_cost']);
+
             $order = $this->orders->create(array_merge([
                 'order_sn' => $this->orderSNGenerator->generate(),
                 'status' => OrderStatus::UNPAID,
                 'payment_status' => null,
                 'payment_method' => null,
-                'coupon_code' => null,
+                'coupon_code' => $items->getDiscountCoupon(),
                 'customer_id' => Auth::id(),
                 'subtotal' => $items->getSubtotal(),
                 'shipping_amount' => $items->getShippingAmount(),
@@ -140,13 +153,8 @@ class OrderServiceImpl implements OrderServiceInterface
                 'postal_code' => (string) $address->postal_code,
             ]);
 
-            $this->orderShippings->create([
-                'order_id' => $order->id,
-                'shipping_method_id' => 0,
-                'shipping_country_id' => $address->country_id,
-                'shipping_weight' => $items->total_weight,
-                'shipping_cost' => 0,
-            ]);
+            $shippingData['order_id'] = $order->id;
+            $this->orderShippings->create($shippingData);
 
             $location = Agent::location();
             $platform = Agent::platform();
