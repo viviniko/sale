@@ -3,7 +3,7 @@
 return [
     'order' => 'Viviniko\Sale\Models\Order',
 
-    'order_product' => 'Viviniko\Sale\Models\OrderProduct',
+    'order_item' => 'Viviniko\Sale\Models\OrderItem',
 
     'order_visitor' => 'Viviniko\Sale\Models\OrderVisitor',
 
@@ -28,10 +28,10 @@ return [
     | Sale Order Products Table
     |--------------------------------------------------------------------------
     |
-    | This is the sale_order_products table.
+    | This is the sale_order_items table.
     |
     */
-    'order_products_table' => 'sale_order_products',
+    'order_items_table' => 'sale_order_items',
 
     /*
     |--------------------------------------------------------------------------

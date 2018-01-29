@@ -15,7 +15,7 @@ class OrderStatus
     const EMAILED = 'E-mailed';
     const CANCELED_REVERSAL = 'Canceled Reversal';
     const PART_REFUNDED = 'Part Refunded';
-    const SHIPPING = 'Shipping';
+    const SHIPPED = 'Shipped';
     const CANCELED = 'Canceled';
 
     public static function values(){
@@ -26,7 +26,7 @@ class OrderStatus
             static::COMPLETED => static::COMPLETED,
             static::PART_REFUNDED => static::PART_REFUNDED,
             static::REFUNDED => static::REFUNDED,
-            static::SHIPPING => static::SHIPPING,
+            static::SHIPPED => static::SHIPPED,
             static::CANCELED => static::CANCELED,
             static::DECIEVE => static::DECIEVE,
             static::DENIED => static::DENIED,

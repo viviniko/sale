@@ -20,7 +20,7 @@ class OrderShipping extends Model
         return $this->belongsTo(Order::class, 'order_id');
     }
 
-    public function shipping_method()
+    public function shippingMethod()
     {
         return $this->belongsTo(ShippingMethod::class, 'shipping_method_id');
     }

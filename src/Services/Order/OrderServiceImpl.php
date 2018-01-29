@@ -12,9 +12,10 @@ use Viviniko\Sale\Contracts\OrderSNGenerator;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Events\OrderCreated;
 use Viviniko\Sale\Events\OrderPaid;
+use Viviniko\Sale\Events\OrderShipped;
 use Viviniko\Sale\Repositories\Order\OrderRepository;
 use Viviniko\Sale\Repositories\OrderAddress\OrderAddressRepository;
-use Viviniko\Sale\Repositories\OrderProduct\OrderProductRepository;
+use Viviniko\Sale\Repositories\OrderItem\OrderItemRepository;
 use Viviniko\Sale\Repositories\OrderShipping\OrderShippingRepository;
 use Viviniko\Sale\Repositories\OrderStatusHistory\OrderStatusHistoryRepository;
 use Viviniko\Sale\Repositories\OrderVisitor\OrderVisitorRepository;
@@ -28,7 +29,7 @@ class OrderServiceImpl implements OrderServiceInterface
 {
     protected $orders;
 
-    protected $orderProducts;
+    protected $orderItems;
 
     protected $orderVisitors;
 
@@ -53,7 +54,7 @@ class OrderServiceImpl implements OrderServiceInterface
 
     public function __construct(
         OrderRepository $orders,
-        OrderProductRepository $orderProducts,
+        OrderItemRepository $orderItems,
         OrderVisitorRepository $orderVisitors,
         OrderAddressRepository $orderAddresses,
         OrderShippingRepository $orderShippings,
@@ -64,7 +65,7 @@ class OrderServiceImpl implements OrderServiceInterface
         Dispatcher $events)
     {
         $this->orders = $orders;
-        $this->orderProducts = $orderProducts;
+        $this->orderItems = $orderItems;
         $this->orderVisitors = $orderVisitors;
         $this->orderAddresses = $orderAddresses;
         $this->orderShippings = $orderShippings;
@@ -127,16 +128,14 @@ class OrderServiceImpl implements OrderServiceInterface
 
 
             foreach ($items as $item) {
-                $this->orderProducts->create([
+                $this->orderItems->create([
                     'order_id' => $order->id,
-                    'product_id' => $item->product_id,
-                    'name' => $item->name,
+                    'item_id' => $item->item_id,
                     'sku' => $item->sku,
+                    'name' => $item->name,
                     'price' => $item->price,
-                    'market_price' => $item->market_price,
                     'quantity' => $item->quantity,
                     'description' => $item->description,
-                    'attrs' => $item->attrs,
                 ]);
             }
 
@@ -183,25 +182,38 @@ class OrderServiceImpl implements OrderServiceInterface
 
     public function changeOrderStatus($orderId, $status, $comment, $logger = null, $logLevel = 0)
     {
-        $order = $this->orders->find($orderId);
+        return DB::transaction(function () use ($orderId, $status, $comment, $logger, $logLevel) {
+            $order = $this->orders->find($orderId);
+            $data = $status;
+            if (is_array($status)) {
+                $status = $status['status'];
+            } else {
+                $data = ['status' => $status];
+            }
 
-        DB::transaction(function () use ($orderId, $status, $comment, $logger, $logLevel) {
-            $this->orders->update($orderId, is_array($status) ? $status : ['status' => $status]);
+            if (!empty($data) && array_key_exists($status, OrderStatus::values())) {
+                $this->orders->update($orderId, $data);
+            }
 
-            $this->orderStatusHistories->create([
+            $history = $this->orderStatusHistories->create([
                 'order_id' => $orderId,
-                'status' => is_array($status) ? $status['status'] : $status,
+                'status' => $status,
                 'comment' => $comment,
                 'logger' => $logger ?? (Auth::user()->firstname . ' ' . Auth::user()->lastname),
                 'log_level' => $logLevel,
                 'created_at' => new Carbon(),
             ]);
-        });
 
-        $status = is_array($status) ? $status['status'] : $status;
-        if ($order && $status == OrderStatus::PAID) {
-            event(new OrderPaid($order));
-        }
+            if ($order) {
+                if ($status == OrderStatus::PAID) {
+                    event(new OrderPaid($order));
+                } else if ($status == OrderStatus::SHIPPED) {
+                    event(new OrderShipped($order));
+                }
+            }
+
+            return $history;
+        });
     }
 
     /**

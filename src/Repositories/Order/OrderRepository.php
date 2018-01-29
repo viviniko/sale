@@ -16,6 +16,25 @@ interface OrderRepository
     public function paginate($perPage, $searchName = 'search', $search = null, $order = null);
 
     /**
+     * Find data by id
+     *
+     * @param       $id
+     *
+     * @return mixed
+     */
+    public function find($id);
+
+    /**
+     * Update a entity in repository by id
+     *
+     * @param       $id
+     * @param array $data
+     *
+     * @return mixed
+     */
+    public function update($id, array $data);
+
+    /**
      * @param mixed $column
      * @param null $value
      * @return boolean

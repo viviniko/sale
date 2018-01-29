@@ -9,4 +9,9 @@ class EloquentOrderStatusHistory extends SimpleRepository implements OrderStatus
     protected $modelConfigKey = 'sale.order_status_history';
 
     protected $fieldSearchable = ['order_id'];
+
+    public function findByOrderId($orderId)
+    {
+        return $this->findBy('order_id', $orderId);
+    }
 }

@@ -15,7 +15,7 @@ class CreateSaleTable extends Migration
     /**
      * @var string
      */
-    protected $orderProductsTable;
+    protected $orderItemsTable;
 
     /**
      * @var string
@@ -43,7 +43,7 @@ class CreateSaleTable extends Migration
     public function __construct()
     {
         $this->ordersTable = Config::get('sale.orders_table');
-        $this->orderProductsTable = Config::get('sale.order_products_table');
+        $this->orderItemsTable = Config::get('sale.order_items_table');
         $this->orderAddressesTable = Config::get('sale.order_addresses_table');
         $this->orderShippingTable = Config::get('sale.order_shipping_table');
         $this->orderVisitorsTable = Config::get('sale.order_visitors_table');
@@ -84,17 +84,15 @@ class CreateSaleTable extends Migration
         });
 
         // Create table for storing orders
-        Schema::create($this->orderProductsTable, function (Blueprint $table) {
+        Schema::create($this->orderItemsTable, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_id');
-            $table->unsignedInteger('product_id');
+            $table->unsignedInteger('item_id');
             $table->string('name');
             $table->string('sku', 32);
             $table->decimal('price', 16, 4);
-            $table->decimal('market_price', 16, 4);
             $table->unsignedSmallInteger('quantity');
             $table->string('description');
-            $table->text('attrs');
         });
 
         // Create table for storing orders
@@ -156,7 +154,7 @@ class CreateSaleTable extends Migration
     public function down()
     {
         Schema::dropIfExists($this->ordersTable);
-        Schema::dropIfExists($this->orderProductsTable);
+        Schema::dropIfExists($this->orderItemsTable);
         Schema::dropIfExists($this->orderAddressesTable);
         Schema::dropIfExists($this->orderShippingTable);
         Schema::dropIfExists($this->orderVisitorsTable);

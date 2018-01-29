@@ -67,8 +67,8 @@ class SaleServiceProvider extends BaseServiceProvider
             \Viviniko\Sale\Repositories\Order\EloquentOrder::class
         );
         $this->app->singleton(
-            \Viviniko\Sale\Repositories\OrderProduct\OrderProductRepository::class,
-            \Viviniko\Sale\Repositories\OrderProduct\EloquentOrderProduct::class
+            \Viviniko\Sale\Repositories\OrderItem\OrderItemRepository::class,
+            \Viviniko\Sale\Repositories\OrderItem\EloquentOrderItem::class
         );
         $this->app->singleton(
             \Viviniko\Sale\Repositories\OrderAddress\OrderAddressRepository::class,

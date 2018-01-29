@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Models;
 
+use Illuminate\Support\Facades\Config;
 use Viviniko\Payment\Models\PayPalEvent;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Enums\PaymentStatus;
@@ -16,9 +17,9 @@ class Order extends Model
         'total_paid', 'customer_email', 'customer_firstname', 'customer_lastname', 'customer_note', 'referer', 'remote_ip',
     ];
 
-    public function products()
+    public function items()
     {
-        return $this->hasMany(OrderProduct::class, 'order_id');
+        return $this->hasMany(Config::get('sale.order_item'), 'order_id');
     }
 
     public function getProductDetailsAttribute()
@@ -30,12 +31,12 @@ class Order extends Model
 
     public function visitor()
     {
-        return $this->hasOne(OrderVisitor::class, 'order_id');
+        return $this->hasOne(Config::get('sale.order_visitor'), 'order_id');
     }
 
     public function address()
     {
-        return $this->hasOne(OrderAddress::class, 'order_id');
+        return $this->hasOne(Config::get('sale.order_address'), 'order_id');
     }
 
     public function shipping()
@@ -45,7 +46,7 @@ class Order extends Model
 
     public function histories()
     {
-        return $this->hasMany(OrderStatusHistory::class);
+        return $this->hasMany(Config::get('sale.order_status_history'), 'order_id');
     }
 
     public function paypalEvent()
