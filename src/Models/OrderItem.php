@@ -12,7 +12,7 @@ class OrderItem extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'item_id', 'name', 'sku', 'price', 'quantity', 'description'
+        'order_id', 'product_id', 'item_id', 'name', 'sku', 'price', 'quantity', 'description'
     ];
 
     protected $appends = [

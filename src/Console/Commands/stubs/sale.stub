@@ -87,6 +87,7 @@ class CreateSaleTable extends Migration
         Schema::create($this->orderItemsTable, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_id');
+            $table->unsignedInteger('product_id');
             $table->unsignedInteger('item_id');
             $table->string('name');
             $table->string('sku', 32);

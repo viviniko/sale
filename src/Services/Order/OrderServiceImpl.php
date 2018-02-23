@@ -130,6 +130,7 @@ class OrderServiceImpl implements OrderServiceInterface
             foreach ($items as $item) {
                 $this->orderItems->create([
                     'order_id' => $order->id,
+                    'product_id' => $item->product_id,
                     'item_id' => $item->item_id,
                     'sku' => $item->sku,
                     'name' => $item->name,
