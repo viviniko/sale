@@ -51,4 +51,6 @@ interface OrderService
     public function updateAddress($orderId, array $data);
 
     public function getOrderStatistics($orderId);
+
+    public function countOrderProductQtyByLatestMonth($productId, $latestMonth = 1);
 }

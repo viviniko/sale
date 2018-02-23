@@ -285,4 +285,9 @@ class OrderServiceImpl implements OrderServiceInterface
             return [$item => $order->$item];
         });
     }
+
+    public function countOrderProductQtyByLatestMonth($productId, $latestMonth = 1)
+    {
+        return $this->orders->countProductQtyByLatestMonth($productId, $latestMonth);
+    }
 }

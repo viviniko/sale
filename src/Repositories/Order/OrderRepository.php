@@ -43,8 +43,8 @@ interface OrderRepository
 
     /**
      * @param $productId
-     * @param int $latestMonth
+     * @param int $latestMonthNum
      * @return int
      */
-    public function getProductQtyByLatestMonth($productId, $latestMonth = 1);
+    public function countProductQtyByLatestMonth($productId, $latestMonthNum);
 }
