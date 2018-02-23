@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Repositories\Order;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\SimpleRepository;
 
