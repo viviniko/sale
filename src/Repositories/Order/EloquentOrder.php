@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Repositories\Order;
 
+use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\SimpleRepository;
 
 class EloquentOrder extends SimpleRepository implements OrderRepository
@@ -15,4 +16,17 @@ class EloquentOrder extends SimpleRepository implements OrderRepository
         'status',
         'created_at' => 'betweenDate',
     ];
+
+    public function getProductQtyByLatestMonth($productId, $latestMonth = 1)
+    {
+        $orderTable = Config::get('sale.orders_table');
+        $orderProductTable = Config::get('sale.order_products_table');
+
+        return $this->createModel()
+            ->join($orderProductTable, "{$orderTable}.id", "=", "{$orderProductTable}.order_id")
+            ->select(["quantity"])
+            ->where("product_id", $productId)
+            ->where("created_at", '>', Carbon::now()->subMonth($latestMonth))
+            ->sum("quantity");
+    }
 }

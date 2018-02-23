@@ -40,4 +40,11 @@ interface OrderRepository
      * @return boolean
      */
     public function exists($column, $value = null);
+
+    /**
+     * @param $productId
+     * @param int $latestMonth
+     * @return int
+     */
+    public function getProductQtyByLatestMonth($productId, $latestMonth = 1);
 }
