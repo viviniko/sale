@@ -40,10 +40,10 @@ class OrderItem extends Model
 
     public function getUrlAttribute()
     {
-        return data_get($this->item, 'url');
+        return data_get($this->product, 'url');
     }
 
-    public function getPictureAttribute()
+    public function getCoverAttribute()
     {
         return data_get($this->item, 'cover');
     }
