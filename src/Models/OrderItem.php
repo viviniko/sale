@@ -40,7 +40,7 @@ class OrderItem extends Model
 
     public function getPictureAttribute()
     {
-        return app(\Common\Catalog\Contracts\ProductService::class)->getProductPicture($this->product_id, $this->attrs);
+        return data_get($this->item, 'cover');
     }
 
     public function getSubtotalAttribute()
