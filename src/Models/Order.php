@@ -24,8 +24,8 @@ class Order extends Model
 
     public function getProductDetailsAttribute()
     {
-        return $this->products->reduce(function ($text, $product) {
-            return $text . $product->name . ' * ' . $product->quantity . '<br>';
+        return $this->items->reduce(function ($text, $item) {
+            return $text . $item->name . ' * ' . $item->quantity . '<br>';
         }, '');
     }
 
