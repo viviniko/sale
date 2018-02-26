@@ -28,6 +28,11 @@ class OrderItem extends Model
         return $this->belongsTo(Config::get('sale.order'), 'order_id');
     }
 
+    public function product()
+    {
+        return $this->belongsTo(Config::get('catalog.product'), 'product_id');
+    }
+
     public function item()
     {
         return $this->belongsTo(Config::get('catalog.item'), 'item_id');
