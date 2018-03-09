@@ -38,6 +38,11 @@ class OrderItem extends Model
         return $this->belongsTo(Config::get('catalog.item'), 'item_id');
     }
 
+    public function getNameAttribute()
+    {
+        return data_get($this->product, 'name');
+    }
+
     public function getUrlAttribute()
     {
         return data_get($this->product, 'url');
@@ -51,5 +56,10 @@ class OrderItem extends Model
     public function getSubtotalAttribute()
     {
         return $this->price * $this->quantity;
+    }
+
+    public function getDescAttrsAttribute()
+    {
+        return data_get($this->item, 'desc_attrs');
     }
 }
