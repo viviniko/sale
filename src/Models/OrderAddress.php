@@ -21,11 +21,20 @@ class OrderAddress extends Model
 
     public function getFirstnameAttribute()
     {
-        return explode(' ', $this->name)[0];
+        if (!$this->firstname) {
+            $this->firstname = explode(' ', $this->name)[0];
+        }
+
+        return $this->firstname;
     }
 
     public function getLastnameAttribute()
     {
-        return explode(' ', $this->name)[1] || '';
+        if (!$this->lastname) {
+            $strs = explode(' ', $this->name, 2);
+            $this->lastname = count($strs) > 1 ? $strs[1] : '';
+        }
+
+        return $this->lastname;
     }
 }
