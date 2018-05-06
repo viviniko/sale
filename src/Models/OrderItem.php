@@ -23,6 +23,10 @@ class OrderItem extends Model
         'item'
     ];
 
+    protected $casts = [
+        'description' => 'array',
+    ];
+
     public function order()
     {
         return $this->belongsTo(Config::get('sale.order'), 'order_id');
@@ -56,10 +60,5 @@ class OrderItem extends Model
     public function getSubtotalAttribute()
     {
         return $this->price * $this->quantity;
-    }
-
-    public function getDescAttrsAttribute()
-    {
-        return data_get($this->item, 'desc_attrs');
     }
 }

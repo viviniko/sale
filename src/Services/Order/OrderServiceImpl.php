@@ -136,7 +136,7 @@ class OrderServiceImpl implements OrderServiceInterface
                     'name' => $item->name,
                     'price' => $item->price,
                     'quantity' => $item->quantity,
-                    'description' => $item->description,
+                    'description' => ['attributes' => $item->item->desc_attrs],
                 ]);
             }
 
