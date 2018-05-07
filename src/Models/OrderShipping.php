@@ -12,7 +12,7 @@ class OrderShipping extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'shipping_method_id', 'shipping_country_id', 'shipping_cost', 'shipping_weight'
+        'order_id', 'shipping_method_id', 'shipping_country', 'shipping_cost', 'shipping_weight'
     ];
 
     public function order()

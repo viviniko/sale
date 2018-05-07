@@ -99,7 +99,7 @@ class OrderServiceImpl implements OrderServiceInterface
         DB::transaction(function () use (&$order, $items, $address, $data) {
             $shippingData = [
                 'shipping_method_id' => 0,
-                'shipping_country_id' => $address->country_id,
+                'shipping_country' => $address->country,
                 'shipping_weight' => $items->total_weight,
                 'shipping_cost' => 0,
             ];
@@ -245,7 +245,7 @@ class OrderServiceImpl implements OrderServiceInterface
     {
         $shipping = $this->orderShippings->findBy('order_id', $orderId)->first();
         $oldShippingAmount = (float) $shipping->shipping_cost;
-        $shippingCost = $this->shippingService->getShippingAmount($shippingMethodId, $shipping->shipping_country_id, $shipping->shipping_weight);
+        $shippingCost = $this->shippingService->getShippingAmount($shippingMethodId, $shipping->shipping_country, $shipping->shipping_weight);
         DB::transaction(function () use ($orderId, $shipping, $shippingMethodId, $shippingCost, $oldShippingAmount) {
             $this->orderShippings->update($shipping->id, [
                 'shipping_method_id' => $shippingMethodId,
@@ -266,8 +266,8 @@ class OrderServiceImpl implements OrderServiceInterface
 
             DB::transaction(function () use ($orderId, &$address, $shipping, $order, $data) {
                 if ($data['country_id']) {
-                    if ($shipping->shipping_country_id != $data['country_id']) {
-                        $this->orderShippings->update($shipping->id, ['shipping_country_id' => $data['country_id']]);
+                    if ($shipping->shipping_country != $data['country']) {
+                        $this->orderShippings->update($shipping->id, ['shipping_country' => $data['country']]);
                         $this->setOrderShippingMethod($orderId, $shipping->shipping_method_id);
                     }
                 }

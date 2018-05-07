@@ -117,7 +117,7 @@ class CreateSaleTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('shipping_method_id');
-            $table->unsignedInteger('shipping_country_id');
+            $table->string('shipping_country', 2);
             $table->decimal('shipping_weight', 16, 2);
             $table->decimal('shipping_cost', 16, 4);
         });
