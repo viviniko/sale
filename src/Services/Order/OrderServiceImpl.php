@@ -105,7 +105,7 @@ class OrderServiceImpl implements OrderServiceInterface
             ];
             if (isset($data['shipping_method_id'])) {
                 $shippingData['shipping_method_id'] = $data['shipping_method_id'];
-                $shippingData['shipping_cost'] = $this->shippingService->getShippingAmount($shippingData['shipping_method_id'], $shippingData['shipping_country_id'], $items->total_weight);
+                $shippingData['shipping_cost'] = $this->shippingService->getShippingAmount($shippingData['shipping_method_id'], $shippingData['shipping_country'], $items->total_weight);
             }
 
             $items->setShippingAmount($shippingData['shipping_cost']);
@@ -265,7 +265,7 @@ class OrderServiceImpl implements OrderServiceInterface
             $shipping = $this->orderShippings->findBy('order_id', $orderId)->first();
 
             DB::transaction(function () use ($orderId, &$address, $shipping, $order, $data) {
-                if ($data['country_id']) {
+                if ($data['country']) {
                     if ($shipping->shipping_country != $data['country']) {
                         $this->orderShippings->update($shipping->id, ['shipping_country' => $data['country']]);
                         $this->setOrderShippingMethod($orderId, $shipping->shipping_method_id);
