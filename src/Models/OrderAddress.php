@@ -11,7 +11,11 @@ class OrderAddress extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'name', 'street1', 'street2', 'city_name', 'state_name', 'country_code', 'country_name', 'phone', 'postal_code',
+        'order_id', 'name',
+        'street1', 'street2', 'city_name',
+        'state', 'state_name',
+        'country', 'country_name',
+        'phone', 'postal_code',
     ];
 
     public function order()

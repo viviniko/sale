@@ -104,8 +104,9 @@ class CreateSaleTable extends Migration
             $table->string('street1');
             $table->string('street2')->nullable();
             $table->string('city_name', 120);
+            $table->string('state', 2)->nullable();
             $table->string('state_name', 120)->nullable();
-            $table->string('country_code', 2);
+            $table->string('country', 2);
             $table->string('country_name', 120);
             $table->string('phone', 32);
             $table->string('postal_code', 20);
