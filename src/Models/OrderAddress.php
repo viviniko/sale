@@ -32,4 +32,19 @@ class OrderAddress extends Model
     {
         return strpos($this->name, ' ') ? explode(' ', $this->name, 2)[1] : '';
     }
+
+    public function getReadableAttribute()
+    {
+        $splices = collect([]);
+        $splices->push($this->street1);
+        $splices->push($this->street2);
+        $splices->push($this->city_name);
+        $splices->push($this->state_name);
+        $splices->push($this->country_name);
+        $splices->push($this->postal_code);
+
+        return $splices->filter(function ($item) {
+            return !empty($item);
+        })->implode(', ');
+    }
 }
