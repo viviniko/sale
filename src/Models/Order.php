@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Models;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
 use Viviniko\Payment\Models\PayPalEvent;
 use Viviniko\Sale\Enums\OrderStatus;
@@ -10,12 +11,16 @@ use Viviniko\Support\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use SoftDeletes;
+
     protected $tableConfigKey = 'sale.orders_table';
 
     protected $fillable = [
         'order_sn', 'status', 'payment_status', 'payment_method', 'coupon_code', 'customer_id', 'subtotal', 'shipping_amount', 'discount_amount', 'grand_total',
         'total_paid', 'customer_email', 'customer_firstname', 'customer_lastname', 'customer_note', 'referer', 'remote_ip',
     ];
+
+    protected $dates = ['deleted_at'];
 
     public function items()
     {

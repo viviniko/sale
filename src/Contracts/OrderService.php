@@ -28,7 +28,7 @@ interface OrderService
      *
      * @param mixed $query
      *
-     * @return \Common\Repository\Builder
+     * @return \Viviniko\Repository\Builder
      */
     public function search($query);
 
@@ -43,6 +43,8 @@ interface OrderService
     public function create(Collection $items, Address $address, array $data = []);
 
     public function update($orderId, array $data);
+
+    public function delete($orderId);
 
     public function changeOrderStatus($orderId, $status, $comment, $logger = null, $logLevel = 0);
 

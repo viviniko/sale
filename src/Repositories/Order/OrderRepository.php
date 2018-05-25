@@ -35,6 +35,16 @@ interface OrderRepository
     public function update($id, array $data);
 
     /**
+     * Delete a entity in repository by id
+     *
+     * @param        $id
+     * @param  bool  $force
+     *
+     * @return mixed
+     */
+    public function delete($id, $force = false);
+
+    /**
      * @param mixed $column
      * @param null $value
      * @return boolean

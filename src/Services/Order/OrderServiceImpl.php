@@ -182,6 +182,11 @@ class OrderServiceImpl implements OrderServiceInterface
         return $this->orders->update($orderId, $data);
     }
 
+    public function delete($orderId)
+    {
+        return $this->orders->delete($orderId, false);
+    }
+
     public function changeOrderStatus($orderId, $status, $comment, $logger = null, $logLevel = 0)
     {
         return DB::transaction(function () use ($orderId, $status, $comment, $logger, $logLevel) {
@@ -234,7 +239,7 @@ class OrderServiceImpl implements OrderServiceInterface
      *
      * @param mixed $query
      *
-     * @return \Common\Repository\Builder
+     * @return \Viviniko\Repository\Builder
      */
     public function search($query)
     {

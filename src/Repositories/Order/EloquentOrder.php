@@ -18,6 +18,9 @@ class EloquentOrder extends SimpleRepository implements OrderRepository
         'created_at' => 'betweenDate',
     ];
 
+    /**
+     * {@inheritdoc}
+     */
     public function countProductQtyByLatestMonth($productId, $latestMonthNum)
     {
         $orderTable = Config::get('sale.orders_table');
@@ -29,5 +32,17 @@ class EloquentOrder extends SimpleRepository implements OrderRepository
             ->where("product_id", $productId)
             ->where("created_at", '>', Carbon::now()->subMonth($latestMonthNum))
             ->sum("quantity");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function delete($id, $force = false)
+    {
+        if ($force === true) {
+            // todo
+        }
+
+        return parent::delete($id);
     }
 }
