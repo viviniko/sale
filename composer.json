@@ -12,13 +12,13 @@
     ],
     "require": {
         "php": ">=7.0",
-        "viviniko/address": "dev-master",
-        "viviniko/agent": "dev-master",
-        "viviniko/catalog": "dev-master",
-        "viviniko/cart": "dev-master",
-        "viviniko/customer": "dev-master",
-        "viviniko/mail": "dev-master",
-        "viviniko/shipping": "dev-master"
+        "viviniko/address": "^v1.0",
+        "viviniko/agent": "^v1.0",
+        "viviniko/catalog": "^v1.0",
+        "viviniko/cart": "^v1.0",
+        "viviniko/customer": "^v1.0",
+        "viviniko/mail": "^v1.0",
+        "viviniko/shipping": "^v1.0"
     },
     "autoload": {
         "psr-0": {
