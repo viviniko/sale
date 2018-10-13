@@ -2,9 +2,12 @@
 
 namespace Viviniko\Sale\Repositories\OrderAddress;
 
-use Viviniko\Repository\SimpleRepository;
+use Viviniko\Repository\EloquentRepository;
 
-class EloquentOrderAddress extends SimpleRepository implements OrderAddressRepository
+class EloquentOrderAddress extends EloquentRepository implements OrderAddressRepository
 {
-    protected $modelConfigKey = 'sale.order_address';
+    public function __construct()
+    {
+        parent::__construct('sale.order_address');
+    }
 }

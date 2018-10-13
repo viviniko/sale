@@ -2,9 +2,12 @@
 
 namespace Viviniko\Sale\Repositories\OrderVisitor;
 
-use Viviniko\Repository\SimpleRepository;
+use Viviniko\Repository\EloquentRepository;
 
-class EloquentOrderVisitor extends SimpleRepository implements OrderVisitorRepository
+class EloquentOrderVisitor extends EloquentRepository implements OrderVisitorRepository
 {
-    protected $modelConfigKey = 'sale.order_visitor';
+    public function __construct()
+    {
+        parent::__construct('sale.order_visitor');
+    }
 }

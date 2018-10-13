@@ -1,14 +1,16 @@
 <?php
 
-namespace Viviniko\Sale\Services\Order;
+namespace Viviniko\Sale\Services\Impl;
 
 use Carbon\Carbon;
 use Viviniko\Address\Models\Address;
 use Viviniko\Agent\Facades\Agent;
 use Viviniko\Cart\Services\Collection;
+use Viviniko\Currency\Facades\CurrencyFacade;
 use Viviniko\Customer\Contracts\CustomerService;
-use Viviniko\Sale\Contracts\OrderService as OrderServiceInterface;
-use Viviniko\Sale\Contracts\OrderSNGenerator;
+use Viviniko\Repository\SearchPageRequest;
+use Viviniko\Sale\Services\OrderService;
+use Viviniko\Sale\Services\OrderSNGenerator;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Events\OrderCreated;
 use Viviniko\Sale\Events\OrderPaid;
@@ -25,7 +27,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
 
-class OrderServiceImpl implements OrderServiceInterface
+class OrderServiceImpl implements OrderService
 {
     protected $orders;
 
@@ -76,12 +78,32 @@ class OrderServiceImpl implements OrderServiceInterface
         $this->events = $events;
     }
 
-    public function find($id)
+    public function paginate($pageSize, $wheres = [], $orders = [])
+    {
+        return $this->orders->search(
+            SearchPageRequest::create($pageSize, $wheres, $orders)
+                ->rules([
+                    'id',
+                    'order_sn' => 'like',
+                    'customer_id',
+                    'status',
+                    'created_at' => 'betweenDate',
+                ])
+                ->request(requset(), 'search')
+        );
+    }
+
+    public function getOrder($id)
     {
         return $this->orders->find($id);
     }
 
-    public function create(Collection $items, Address $address, array $data = [])
+    public function getOrderByOrderNumber($orderNumber)
+    {
+        return $this->orders->findBy('order_number', $orderNumber);
+    }
+
+    public function placeOrder(Collection $items, Address $address, array $data = [])
     {
         $order = null;
         if (Auth::check()) {
@@ -111,12 +133,13 @@ class OrderServiceImpl implements OrderServiceInterface
             $items->setShippingAmount($shippingData['shipping_cost']);
 
             $order = $this->orders->create(array_merge([
-                'order_sn' => $this->orderSNGenerator->generate(),
+                'order_number' => $this->orderSNGenerator->generate(),
                 'status' => OrderStatus::UNPAID,
                 'payment_status' => null,
                 'payment_method' => null,
                 'coupon_code' => $items->getDiscountCoupon(),
                 'customer_id' => Auth::id(),
+                'currency' => CurrencyFacade::getDefault(),
                 'subtotal' => $items->getSubtotal(),
                 'shipping_amount' => $items->getShippingAmount(),
                 'discount_amount' => $items->getDiscountAmount(),
@@ -134,7 +157,9 @@ class OrderServiceImpl implements OrderServiceInterface
                     'item_id' => $item->item_id,
                     'sku' => $item->sku,
                     'name' => $item->name,
-                    'price' => $item->price,
+                    'subtotal' => $item->subtotal,
+                    'amount' => $item->amount,
+                    'discount' => $item->discount,
                     'quantity' => $item->quantity,
                     'description' => (array) $item->desc_attrs,
                 ]);
@@ -177,12 +202,12 @@ class OrderServiceImpl implements OrderServiceInterface
         return $order;
     }
 
-    public function update($orderId, array $data)
+    public function updateOrder($orderId, array $data)
     {
         return $this->orders->update($orderId, $data);
     }
 
-    public function delete($orderId)
+    public function deleteOrder($orderId)
     {
         return $this->orders->delete($orderId, false);
     }
@@ -223,29 +248,6 @@ class OrderServiceImpl implements OrderServiceInterface
         });
     }
 
-    /**
-     * Get order.
-     *
-     * @param $orderSN
-     * @return mixed
-     */
-    public function findByOrderSN($orderSN)
-    {
-        return $this->orders->findBy('order_sn', $orderSN)->first();
-    }
-
-    /**
-     * Paginate orders.
-     *
-     * @param mixed $query
-     *
-     * @return \Viviniko\Repository\Builder
-     */
-    public function search($query)
-    {
-        return $this->orders->search($query);
-    }
-
     public function setOrderShippingMethod($orderId, $shippingMethodId)
     {
         $shipping = $this->orderShippings->findBy('order_id', $orderId)->first();
@@ -262,7 +264,7 @@ class OrderServiceImpl implements OrderServiceInterface
         });
     }
 
-    public function updateAddress($orderId, array $data)
+    public function updateOrderAddress($orderId, array $data)
     {
         $order = $this->orders->find($orderId);
         if ($order) {

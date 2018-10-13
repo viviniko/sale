@@ -95,14 +95,14 @@ class SaleServiceProvider extends BaseServiceProvider
      */
     protected function registerOrderService()
     {
-        $this->app->singleton(\Viviniko\Sale\Contracts\OrderSNGenerator::class, function ($app) {
-            return (new \Viviniko\Sale\Services\Order\TimeOrderSNGenerator())
+        $this->app->singleton(\Viviniko\Sale\Services\OrderSNGenerator::class, function ($app) {
+            return (new \Viviniko\Sale\Services\Impl\TimeOrderSNGenerator())
                 ->setOrderRepository($app[\Viviniko\Sale\Repositories\Order\OrderRepository::class])
                 ->prefix($app['config']->get('order.prefix'));
         });
         $this->app->singleton(
-            \Viviniko\Sale\Contracts\OrderService::class,
-            \Viviniko\Sale\Services\Order\OrderServiceImpl::class
+            \Viviniko\Sale\Services\OrderService::class,
+            \Viviniko\Sale\Services\Impl\OrderServiceImpl::class
         );
     }
 
@@ -114,7 +114,7 @@ class SaleServiceProvider extends BaseServiceProvider
     public function provides()
     {
         return [
-            \Viviniko\Sale\Contracts\OrderService::class,
+            \Viviniko\Sale\Services\OrderService::class,
         ];
     }
 }

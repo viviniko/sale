@@ -4,19 +4,14 @@ namespace Viviniko\Sale\Repositories\Order;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
-use Viviniko\Repository\SimpleRepository;
+use Viviniko\Repository\EloquentRepository;
 
-class EloquentOrder extends SimpleRepository implements OrderRepository
+class EloquentOrder extends EloquentRepository implements OrderRepository
 {
-    protected $modelConfigKey = 'sale.order';
-
-    protected $fieldSearchable = [
-        'id',
-        'order_sn' => 'like',
-        'customer_id',
-        'status',
-        'created_at' => 'betweenDate',
-    ];
+    public function __construct()
+    {
+        parent::__construct('sale.order');
+    }
 
     /**
      * {@inheritdoc}

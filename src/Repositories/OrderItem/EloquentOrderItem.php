@@ -2,9 +2,12 @@
 
 namespace Viviniko\Sale\Repositories\OrderItem;
 
-use Viviniko\Repository\SimpleRepository;
+use Viviniko\Repository\EloquentRepository;
 
-class EloquentOrderItem extends SimpleRepository implements OrderItemRepository
+class EloquentOrderItem extends EloquentRepository implements OrderItemRepository
 {
-    protected $modelConfigKey = 'sale.order_item';
+    public function __construct()
+    {
+        parent::__construct('sale.order_item');
+    }
 }

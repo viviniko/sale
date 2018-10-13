@@ -1,6 +1,6 @@
 <?php
 
-namespace Viviniko\Sale\Services\Order;
+namespace Viviniko\Sale\Services\Impl;
 
 use Carbon\Carbon;
 

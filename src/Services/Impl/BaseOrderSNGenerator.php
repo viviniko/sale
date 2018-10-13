@@ -1,8 +1,8 @@
 <?php
 
-namespace Viviniko\Sale\Services\Order;
+namespace Viviniko\Sale\Services\Impl;
 
-use Viviniko\Sale\Contracts\OrderSNGenerator;
+use Viviniko\Sale\Services\OrderSNGenerator;
 use Viviniko\Sale\Repositories\Order\OrderRepository;
 
 abstract class BaseOrderSNGenerator implements OrderSNGenerator {

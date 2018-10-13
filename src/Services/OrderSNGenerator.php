@@ -1,6 +1,6 @@
 <?php
 
-namespace Viviniko\Sale\Contracts;
+namespace Viviniko\Sale\Services;
 
 interface OrderSNGenerator {
 

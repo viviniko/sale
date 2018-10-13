@@ -6,9 +6,11 @@ use Viviniko\Repository\SimpleRepository;
 
 class EloquentOrderStatusHistory extends SimpleRepository implements OrderStatusHistoryRepository
 {
-    protected $modelConfigKey = 'sale.order_status_history';
 
-    protected $fieldSearchable = ['order_id'];
+    public function __construct()
+    {
+        parent::__construct('sale.order_status_history');
+    }
 
     public function findByOrderId($orderId)
     {

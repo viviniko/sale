@@ -2,9 +2,12 @@
 
 namespace Viviniko\Sale\Repositories\OrderShipping;
 
-use Viviniko\Repository\SimpleRepository;
+use Viviniko\Repository\EloquentRepository;
 
-class EloquentOrderShipping extends SimpleRepository implements OrderShippingRepository
+class EloquentOrderShipping extends EloquentRepository implements OrderShippingRepository
 {
-    protected $modelConfigKey = 'sale.order_shipping';
+    public function __construct()
+    {
+        parent::__construct('sale.order_shipping');
+    }
 }

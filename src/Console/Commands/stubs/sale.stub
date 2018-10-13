@@ -60,7 +60,7 @@ class CreateSaleTable extends Migration
         // Create table for storing orders
         Schema::create($this->ordersTable, function (Blueprint $table) {
             $table->increments('id');
-            $table->char('order_sn', 20);
+            $table->char('order_number', 20);
             $table->string('status', 32);
             $table->string('payment_status', 32)->nullable();
             $table->string('payment_method', 32)->nullable();
@@ -81,7 +81,7 @@ class CreateSaleTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique('order_sn');
+            $table->unique('order_number');
         });
 
         // Create table for storing orders
@@ -90,10 +90,12 @@ class CreateSaleTable extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('item_id');
+            $table->decimal('subtotal', 16, 4);
+            $table->decimal('amount', 16, 4);
+            $table->unsignedTinyInteger('discount');
+            $table->unsignedSmallInteger('quantity');
             $table->string('name');
             $table->string('sku', 32);
-            $table->decimal('price', 16, 4);
-            $table->unsignedSmallInteger('quantity');
             $table->string('description');
         });
 
@@ -119,7 +121,7 @@ class CreateSaleTable extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('shipping_method_id');
             $table->string('shipping_country', 2);
-            $table->decimal('shipping_weight', 16, 2);
+            $table->decimal('shipping_weight', 16, 4);
             $table->decimal('shipping_cost', 16, 4);
         });
 

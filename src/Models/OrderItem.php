@@ -12,7 +12,7 @@ class OrderItem extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'product_id', 'item_id', 'name', 'sku', 'price', 'quantity', 'description'
+        'order_id', 'product_id', 'item_id', 'subtotal', 'amount', 'discount', 'quantity', 'name', 'sku', 'description'
     ];
 
     protected $appends = [
@@ -55,10 +55,5 @@ class OrderItem extends Model
     public function getCoverAttribute()
     {
         return data_get($this->item, 'cover');
-    }
-
-    public function getSubtotalAttribute()
-    {
-        return $this->price * $this->quantity;
     }
 }
