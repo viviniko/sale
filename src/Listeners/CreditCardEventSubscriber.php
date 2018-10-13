@@ -2,9 +2,9 @@
 
 namespace Viviniko\Sale\Listeners;
 
-use Viviniko\Payment\Contracts\CreditCardService;
+use Viviniko\Payment\Services\CreditCardService;
 use Viviniko\Payment\Enums\PaymentMethod;
-use Viviniko\Sale\Contracts\OrderService;
+use Viviniko\Sale\Services\OrderService;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Enums\PaymentStatus;
 

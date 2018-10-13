@@ -3,8 +3,8 @@
 namespace Viviniko\Sale\Listeners;
 
 use Carbon\Carbon;
-use Viviniko\Payment\Contracts\PayPalService;
-use Viviniko\Sale\Contracts\OrderService;
+use Viviniko\Payment\Services\PayPalService;
+use Viviniko\Sale\Services\OrderService;
 use Viviniko\Sale\Enums\OrderStatus;
 
 class PayPalEventSubscriber

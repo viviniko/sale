@@ -3,8 +3,8 @@
 namespace Viviniko\Sale\Console\Commands;
 
 use Carbon\Carbon;
-use Viviniko\Mail\Contracts\MailService;
-use Viviniko\Sale\Contracts\OrderService;
+use Viviniko\Mail\Services\MailService;
+use Viviniko\Sale\Services\OrderService;
 use Viviniko\Sale\Enums\OrderStatus;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;

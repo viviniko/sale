@@ -3,9 +3,9 @@
 namespace Viviniko\Sale\Listeners;
 
 use Illuminate\Support\Facades\DB;
-use Viviniko\Catalog\Contracts\ItemService;
-use Viviniko\Mail\Contracts\MailService;
-use Viviniko\Sale\Contracts\OrderService;
+use Viviniko\Catalog\Services\ItemService;
+use Viviniko\Mail\Services\MailService;
+use Viviniko\Sale\Services\OrderService;
 use Viviniko\Sale\Events\OrderCreated;
 use Viviniko\Sale\Events\OrderPaid;
 use Illuminate\Support\Facades\Log;
