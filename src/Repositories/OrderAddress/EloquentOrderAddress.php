@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Repositories\OrderAddress;
 
+use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\EloquentRepository;
 
 class EloquentOrderAddress extends EloquentRepository implements OrderAddressRepository

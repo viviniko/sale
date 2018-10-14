@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Repositories\OrderShipping;
 
+use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\EloquentRepository;
 
 class EloquentOrderShipping extends EloquentRepository implements OrderShippingRepository

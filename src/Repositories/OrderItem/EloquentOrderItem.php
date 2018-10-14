@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Repositories\OrderItem;
 
+use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\EloquentRepository;
 
 class EloquentOrderItem extends EloquentRepository implements OrderItemRepository

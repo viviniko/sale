@@ -2,6 +2,7 @@
 
 namespace Viviniko\Sale\Repositories\OrderStatusHistory;
 
+use Illuminate\Support\Facades\Config;
 use Viviniko\Repository\SimpleRepository;
 
 class EloquentOrderStatusHistory extends SimpleRepository implements OrderStatusHistoryRepository
