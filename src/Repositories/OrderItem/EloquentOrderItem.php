@@ -8,6 +8,6 @@ class EloquentOrderItem extends EloquentRepository implements OrderItemRepositor
 {
     public function __construct()
     {
-        parent::__construct('sale.order_item');
+        parent::__construct(Config::get('sale.order_item'));
     }
 }

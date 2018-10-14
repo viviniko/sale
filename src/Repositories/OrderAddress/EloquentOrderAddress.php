@@ -8,6 +8,6 @@ class EloquentOrderAddress extends EloquentRepository implements OrderAddressRep
 {
     public function __construct()
     {
-        parent::__construct('sale.order_address');
+        parent::__construct(Config::get('sale.order_address'));
     }
 }

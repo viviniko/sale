@@ -9,7 +9,7 @@ class EloquentOrderStatusHistory extends SimpleRepository implements OrderStatus
 
     public function __construct()
     {
-        parent::__construct('sale.order_status_history');
+        parent::__construct(Config::get('sale.order_status_history'));
     }
 
     public function findByOrderId($orderId)

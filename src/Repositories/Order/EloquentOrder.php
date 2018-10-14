@@ -10,7 +10,7 @@ class EloquentOrder extends EloquentRepository implements OrderRepository
 {
     public function __construct()
     {
-        parent::__construct('sale.order');
+        parent::__construct(Config::get('sale.order'));
     }
 
     /**

@@ -8,6 +8,6 @@ class EloquentOrderVisitor extends EloquentRepository implements OrderVisitorRep
 {
     public function __construct()
     {
-        parent::__construct('sale.order_visitor');
+        parent::__construct(Config::get('sale.order_visitor'));
     }
 }

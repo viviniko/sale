@@ -8,6 +8,6 @@ class EloquentOrderShipping extends EloquentRepository implements OrderShippingR
 {
     public function __construct()
     {
-        parent::__construct('sale.order_shipping');
+        parent::__construct(Config::get('sale.order_shipping'));
     }
 }
