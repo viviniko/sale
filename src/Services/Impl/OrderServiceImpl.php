@@ -89,7 +89,7 @@ class OrderServiceImpl implements OrderService
                     'status',
                     'created_at' => 'betweenDate',
                 ])
-                ->request(requset(), 'search')
+                ->request(request(), 'search')
         );
     }
 
