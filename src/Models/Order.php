@@ -18,7 +18,7 @@ class Order extends Model
     protected $fillable = [
         'order_number', 'status', 'payment_status', 'payment_method', 'coupon_code', 'customer_id',
         'subtotal', 'shipping_amount', 'discount_amount', 'grand_total', 'total_paid',
-        'customer_email', 'customer_firstname', 'customer_lastname', 'customer_note', 'referer', 'remote_ip',
+        'customer_email', 'customer_first_name', 'customer_last_name', 'customer_note', 'referer', 'remote_ip',
     ];
 
     protected $dates = ['deleted_at'];
@@ -80,14 +80,14 @@ class Order extends Model
         return data_get($this->address, 'name');
     }
 
-    public function getShippingFirstnameAttribute()
+    public function getShippingFirstNameAttribute()
     {
-        return $this->customer_firstname;
+        return $this->customer_first_name;
     }
 
-    public function getShippingLastnameAttribute()
+    public function getShippingLastNameAttribute()
     {
-        return $this->customer_lastname;
+        return $this->customer_last_name;
     }
 
     public function getShippingCountryNameAttribute()

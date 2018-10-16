@@ -113,8 +113,8 @@ class OrderServiceImpl implements OrderService
         }
 
         if (isset($customer)) {
-            $data['customer_firstname'] = $data['customer_firstname'] ?? $customer->firstname;
-            $data['customer_lastname'] = $data['customer_lastname'] ?? $customer->lastname;
+            $data['customer_first_name'] = $data['customer_first_name'] ?? $customer->first_name;
+            $data['customer_last_name'] = $data['customer_last_name'] ?? $customer->last_name;
             $data['customer_id'] = $data['customer_id'] ?? $customer->id;
         }
 
