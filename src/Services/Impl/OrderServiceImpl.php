@@ -125,7 +125,7 @@ class OrderServiceImpl implements OrderService
                 'shipping_cost' => 0,
             ];
             if (isset($data['shipping_method_id'])) {
-                $shippingAmount = $this->shippingService->getShippingAmount($shippingData['shipping_method_id'], $shippingData['shipping_country'], $items->total_weight);
+                $shippingAmount = $this->shippingService->getShippingAmount($data['shipping_method_id'], $shippingData['shipping_country'], $items->total_weight);
                 $shippingData['shipping_method_id'] = $data['shipping_method_id'];
                 $shippingData['shipping_cost'] = $shippingAmount->value;
                 $items->setShippingAmount($shippingAmount);
