@@ -49,6 +49,11 @@ class Order extends Model
         return Amount::createBaseAmount($shippingAmount);
     }
 
+    public function getTotalPaidAttribute($totalPaid)
+    {
+        return Amount::createBaseAmount($totalPaid);
+    }
+
     public function getProductDetailsAttribute()
     {
         return $this->items->reduce(function ($text, $item) {

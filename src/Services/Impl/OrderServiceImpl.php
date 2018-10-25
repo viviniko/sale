@@ -229,7 +229,7 @@ class OrderServiceImpl implements OrderService
                 'order_id' => $orderId,
                 'status' => $status,
                 'comment' => $comment,
-                'logger' => $logger ?? (Auth::user()->firstname . ' ' . Auth::user()->lastname),
+                'logger' => $logger ?? (Auth::user()->first_name . ' ' . Auth::user()->last_name),
                 'log_level' => $logLevel,
                 'created_at' => new Carbon(),
             ]);
@@ -249,7 +249,7 @@ class OrderServiceImpl implements OrderService
     public function setOrderShippingMethod($orderId, $shippingMethodId)
     {
         $shipping = $this->orderShippings->findBy('order_id', $orderId)->first();
-        $oldShippingAmount = (float) $shipping->shipping_cost;
+        $oldShippingAmount = $shipping->shipping_cost;
         $shippingCost = $this->shippingService->getShippingAmount($shippingMethodId, $shipping->shipping_country, $shipping->shipping_weight);
         DB::transaction(function () use ($orderId, $shipping, $shippingMethodId, $shippingCost, $oldShippingAmount) {
             $this->orderShippings->update($shipping->id, [
@@ -257,7 +257,7 @@ class OrderServiceImpl implements OrderService
                 'shipping_cost' => $shippingCost->value,
             ]);
             if ($order = $this->orders->find($orderId)) {
-                $this->orders->update($orderId, ['shipping_amount' => $shippingCost->value, 'grand_total' => $order->grand_total + $shippingCost - $oldShippingAmount]);
+                $this->orders->update($orderId, ['shipping_amount' => $shippingCost->value, 'grand_total' => $order->grand_total->add($shippingCost)->sub($oldShippingAmount)]);
             }
         });
     }
