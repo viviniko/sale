@@ -30,7 +30,7 @@ abstract class BaseOrderSNGenerator implements OrderSNGenerator {
 
     protected function unique($sn)
     {
-        return $this->orderRepository && $this->orderRepository->exists('order_sn', $sn) ? $this->generate() : $sn;
+        return $this->orderRepository && $this->orderRepository->exists('order_number', $sn) ? $this->generate() : $sn;
     }
 
     protected function random($pool, $length)

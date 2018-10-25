@@ -3,6 +3,7 @@
 namespace Viviniko\Sale\Models;
 
 use Illuminate\Support\Facades\Config;
+use Viviniko\Currency\Amount;
 use Viviniko\Support\Database\Eloquent\Model;
 
 class OrderItem extends Model
@@ -26,6 +27,16 @@ class OrderItem extends Model
     protected $casts = [
         'description' => 'array',
     ];
+
+    public function getSubtotalAttribute($subtotal)
+    {
+        return Amount::createBaseAmount($subtotal);
+    }
+
+    public function getAmountAttribute($amount)
+    {
+        return Amount::createBaseAmount($amount);
+    }
 
     public function order()
     {

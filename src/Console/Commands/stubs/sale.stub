@@ -72,8 +72,8 @@ class CreateSaleTable extends Migration
             $table->decimal('total_paid', 16, 4)->default(0);
             $table->unsignedInteger('customer_id')->default(0);
             $table->string('customer_email')->nullable();
-            $table->string('customer_firstname')->nullable();
-            $table->string('customer_lastname')->nullable();
+            $table->string('customer_first_name')->nullable();
+            $table->string('customer_last_name')->nullable();
             $table->string('customer_note', 765)->nullable();
             $table->string('referer')->nullable();
             $table->string('remote_ip', '64');

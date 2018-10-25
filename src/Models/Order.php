@@ -4,6 +4,7 @@ namespace Viviniko\Sale\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
+use Viviniko\Currency\Amount;
 use Viviniko\Payment\Models\PayPalEvent;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Enums\PaymentStatus;
@@ -26,6 +27,26 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(Config::get('sale.order_item'), 'order_id');
+    }
+    
+    public function getSubtotalAttribute($subtotal)
+    {
+        return Amount::createBaseAmount($subtotal);
+    }
+
+    public function getGrandTotalAttribute($grandTotal)
+    {
+        return Amount::createBaseAmount($grandTotal);
+    }
+
+    public function getDiscountAmountAttribute($discountAmount)
+    {
+        return Amount::createBaseAmount($discountAmount);
+    }
+
+    public function getShippingAmountAttribute($shippingAmount)
+    {
+        return Amount::createBaseAmount($shippingAmount);
     }
 
     public function getProductDetailsAttribute()

@@ -5,8 +5,7 @@ namespace Viviniko\Sale\Services\Impl;
 use Carbon\Carbon;
 use Viviniko\Address\Models\Address;
 use Viviniko\Agent\Facades\Agent;
-use Viviniko\Cart\Services\Collection;
-use Viviniko\Currency\Facades\CurrencyFacade;
+use Viviniko\Cart\Collection;
 use Viviniko\Customer\Services\CustomerService;
 use Viviniko\Repository\SearchPageRequest;
 use Viviniko\Sale\Services\OrderService;
@@ -84,7 +83,7 @@ class OrderServiceImpl implements OrderService
             SearchPageRequest::create($pageSize, $wheres, $orders)
                 ->rules([
                     'id',
-                    'order_sn' => 'like',
+                    'order_number' => 'like',
                     'customer_id',
                     'status',
                     'created_at' => 'betweenDate',
@@ -126,11 +125,11 @@ class OrderServiceImpl implements OrderService
                 'shipping_cost' => 0,
             ];
             if (isset($data['shipping_method_id'])) {
+                $shippingAmount = $this->shippingService->getShippingAmount($shippingData['shipping_method_id'], $shippingData['shipping_country'], $items->total_weight);
                 $shippingData['shipping_method_id'] = $data['shipping_method_id'];
-                $shippingData['shipping_cost'] = $this->shippingService->getShippingAmount($shippingData['shipping_method_id'], $shippingData['shipping_country'], $items->total_weight);
+                $shippingData['shipping_cost'] = $shippingAmount->value;
+                $items->setShippingAmount($shippingAmount);
             }
-
-            $items->setShippingAmount($shippingData['shipping_cost']);
 
             $order = $this->orders->create(array_merge([
                 'order_number' => $this->orderSNGenerator->generate(),
@@ -139,11 +138,10 @@ class OrderServiceImpl implements OrderService
                 'payment_method' => null,
                 'coupon_code' => $items->getDiscountCoupon(),
                 'customer_id' => Auth::id(),
-                'currency' => CurrencyFacade::getDefault(),
-                'subtotal' => $items->getSubtotal(),
-                'shipping_amount' => $items->getShippingAmount(),
-                'discount_amount' => $items->getDiscountAmount(),
-                'grand_total' => $items->getGrandTotal(),
+                'subtotal' => $items->getSubtotal()->value,
+                'shipping_amount' => $items->getShippingAmount()->value,
+                'discount_amount' => $items->getDiscountAmount()->value,
+                'grand_total' => $items->getGrandTotal()->value,
                 'customer_note' => null,
                 'referer' => null,
                 'remote_ip' => Request::ip(),
@@ -157,8 +155,8 @@ class OrderServiceImpl implements OrderService
                     'item_id' => $item->item_id,
                     'sku' => $item->sku,
                     'name' => $item->name,
-                    'subtotal' => $item->subtotal,
-                    'amount' => $item->amount,
+                    'subtotal' => $item->subtotal->value,
+                    'amount' => $item->amount->value,
                     'discount' => $item->discount,
                     'quantity' => $item->quantity,
                     'description' => (array) $item->desc_attrs,
@@ -256,10 +254,10 @@ class OrderServiceImpl implements OrderService
         DB::transaction(function () use ($orderId, $shipping, $shippingMethodId, $shippingCost, $oldShippingAmount) {
             $this->orderShippings->update($shipping->id, [
                 'shipping_method_id' => $shippingMethodId,
-                'shipping_cost' => $shippingCost,
+                'shipping_cost' => $shippingCost->value,
             ]);
             if ($order = $this->orders->find($orderId)) {
-                $this->orders->update($orderId, ['shipping_amount' => $shippingCost, 'grand_total' => $order->grand_total + $shippingCost - $oldShippingAmount]);
+                $this->orders->update($orderId, ['shipping_amount' => $shippingCost->value, 'grand_total' => $order->grand_total + $shippingCost - $oldShippingAmount]);
             }
         });
     }

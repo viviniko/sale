@@ -3,7 +3,7 @@
 namespace Viviniko\Sale\Services;
 
 use Viviniko\Address\Models\Address;
-use Viviniko\Cart\Services\Collection;
+use Viviniko\Cart\Collection;
 
 interface OrderService
 {
