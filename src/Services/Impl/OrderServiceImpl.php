@@ -159,7 +159,7 @@ class OrderServiceImpl implements OrderService
                     'amount' => $item->amount->value,
                     'discount' => $item->discount,
                     'quantity' => $item->quantity,
-                    'description' => (array) $item->desc_attrs,
+                    'description' => (array) $item->desc_specs,
                 ]);
             }
 
