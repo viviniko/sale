@@ -3,6 +3,7 @@
 namespace Viviniko\Sale\Services\Impl;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Arrayable;
 use Viviniko\Address\Models\Address;
 use Viviniko\Agent\Facades\Agent;
 use Viviniko\Cart\Collection;
@@ -159,7 +160,7 @@ class OrderServiceImpl implements OrderService
                     'amount' => $item->amount->value,
                     'discount' => $item->discount,
                     'quantity' => $item->quantity,
-                    'description' => (array) $item->desc_specs,
+                    'description' => $item->desc_specs instanceof Arrayable ? $item->desc_specs->toArray() : (array) $item->desc_specs,
                 ]);
             }
 
