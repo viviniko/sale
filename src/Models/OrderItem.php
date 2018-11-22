@@ -17,7 +17,7 @@ class OrderItem extends Model
     ];
 
     protected $appends = [
-        'picture', 'url'
+        'cover', 'url'
     ];
 
     protected $hidden = [
