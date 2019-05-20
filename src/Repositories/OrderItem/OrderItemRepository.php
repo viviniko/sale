@@ -2,7 +2,9 @@
 
 namespace Viviniko\Sale\Repositories\OrderItem;
 
-interface OrderItemRepository
+use Viviniko\Repository\CrudRepository;
+
+interface OrderItemRepository extends CrudRepository
 {
 
 }

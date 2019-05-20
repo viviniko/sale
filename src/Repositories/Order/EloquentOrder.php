@@ -14,6 +14,17 @@ class EloquentOrder extends EloquentRepository implements OrderRepository
     }
 
     /**
+     * Get order by order number.
+     *
+     * @param $orderNumber
+     * @return mixed
+     */
+    public function findByOrderNumber($orderNumber)
+    {
+        return $this->createQuery()->where('order_number', $orderNumber)->first();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function countProductQtyByLatestMonth($productId, $latestMonthNum)
@@ -27,17 +38,5 @@ class EloquentOrder extends EloquentRepository implements OrderRepository
             ->where("product_id", $productId)
             ->where("created_at", '>', Carbon::now()->subMonth($latestMonthNum))
             ->sum("quantity");
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function delete($id, $force = false)
-    {
-        if ($force === true) {
-            // todo
-        }
-
-        return parent::delete($id);
     }
 }
