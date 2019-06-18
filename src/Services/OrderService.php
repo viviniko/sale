@@ -7,31 +7,6 @@ use Viviniko\Cart\Collection;
 
 interface OrderService
 {
-    /**
-     * Paginate the given query into a simple paginator.
-     *
-     * @param $pageSize
-     * @param array $wheres
-     * @param array $orders
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    public function paginate($pageSize, $wheres = [], $orders = []);
-
-    /**
-     * Get order.
-     *
-     * @param $id
-     * @return mixed
-     */
-    public function getOrder($id);
-
-    /**
-     * Get order.
-     *
-     * @param $orderNumber
-     * @return mixed
-     */
-    public function getOrderByOrderNumber($orderNumber);
 
     /**
      * Create order.
@@ -42,10 +17,6 @@ interface OrderService
      * @return  mixed
      */
     public function placeOrder(Collection $items, Address $address, array $data = []);
-
-    public function updateOrder($orderId, array $data);
-
-    public function deleteOrder($orderId);
 
     public function changeOrderStatus($orderId, $status, $comment, $logger = null, $logLevel = 0);
 

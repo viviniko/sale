@@ -78,31 +78,6 @@ class OrderServiceImpl implements OrderService
         $this->events = $events;
     }
 
-    public function paginate($pageSize, $wheres = [], $orders = [])
-    {
-        return $this->orders->search(
-            SearchPageRequest::create($pageSize, $wheres, $orders)
-                ->rules([
-                    'id',
-                    'order_number' => 'like',
-                    'customer_id',
-                    'status',
-                    'created_at' => 'betweenDate',
-                ])
-                ->request(request(), 'search')
-        );
-    }
-
-    public function getOrder($id)
-    {
-        return $this->orders->find($id);
-    }
-
-    public function getOrderByOrderNumber($orderNumber)
-    {
-        return $this->orders->findBy('order_number', $orderNumber);
-    }
-
     public function placeOrder(Collection $items, Address $address, array $data = [])
     {
         $order = null;
@@ -199,16 +174,6 @@ class OrderServiceImpl implements OrderService
         $this->events->dispatch(new OrderCreated($order));
 
         return $order;
-    }
-
-    public function updateOrder($orderId, array $data)
-    {
-        return $this->orders->update($orderId, $data);
-    }
-
-    public function deleteOrder($orderId)
-    {
-        return $this->orders->delete($orderId, false);
     }
 
     public function changeOrderStatus($orderId, $status, $comment, $logger = null, $logLevel = 0)
