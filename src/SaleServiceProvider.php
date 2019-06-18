@@ -2,10 +2,9 @@
 
 namespace Viviniko\Sale;
 
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Viviniko\Sale\Console\Commands\SaleTableCommand;
 use Viviniko\Sale\Console\Commands\SendOrderRemainderEmails;
-use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 
 class SaleServiceProvider extends BaseServiceProvider
 {
@@ -47,9 +46,6 @@ class SaleServiceProvider extends BaseServiceProvider
         $this->registerOrderService();
 
         $this->registerCommands();
-
-        Event::subscribe(\Viviniko\Sale\Listeners\CreditCardEventSubscriber::class);
-        Event::subscribe(\Viviniko\Sale\Listeners\PayPalEventSubscriber::class);
     }
 
     /**
