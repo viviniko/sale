@@ -49,7 +49,6 @@ class SaleServiceProvider extends BaseServiceProvider
         $this->registerCommands();
 
         Event::subscribe(\Viviniko\Sale\Listeners\CreditCardEventSubscriber::class);
-        Event::subscribe(\Viviniko\Sale\Listeners\OrderEventSubscriber::class);
         Event::subscribe(\Viviniko\Sale\Listeners\PayPalEventSubscriber::class);
     }
 
