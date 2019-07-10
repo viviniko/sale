@@ -100,10 +100,6 @@ class SaleServiceProvider extends BaseServiceProvider
                 ->setOrderRepository($app[\Viviniko\Sale\Repositories\Order\OrderRepository::class])
                 ->prefix($app['config']->get('order.prefix'));
         });
-        $this->app->singleton(
-            \Viviniko\Sale\Services\OrderService::class,
-            \Viviniko\Sale\Services\Impl\OrderServiceImpl::class
-        );
     }
 
     /**
@@ -113,8 +109,6 @@ class SaleServiceProvider extends BaseServiceProvider
      */
     public function provides()
     {
-        return [
-            \Viviniko\Sale\Services\OrderService::class,
-        ];
+        return [];
     }
 }
