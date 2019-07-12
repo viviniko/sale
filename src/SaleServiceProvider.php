@@ -4,7 +4,6 @@ namespace Viviniko\Sale;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Viviniko\Sale\Console\Commands\SaleTableCommand;
-use Viviniko\Sale\Console\Commands\SendOrderRemainderEmails;
 
 class SaleServiceProvider extends BaseServiceProvider
 {
@@ -29,7 +28,6 @@ class SaleServiceProvider extends BaseServiceProvider
 
         // Register commands
         $this->commands('command.sale.table');
-        $this->commands(SendOrderRemainderEmails::class);
     }
 
     /**
