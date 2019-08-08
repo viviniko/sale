@@ -5,7 +5,6 @@ namespace Viviniko\Sale\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
 use Viviniko\Currency\Amount;
-use Viviniko\Payment\Models\PayPalEvent;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Enums\PaymentStatus;
 use Viviniko\Support\Database\Eloquent\Model;
@@ -17,12 +16,12 @@ class Order extends Model
     protected $tableConfigKey = 'sale.orders_table';
 
     protected $fillable = [
-        'order_number', 'status', 'payment_status', 'payment_method', 'coupon_code', 'customer_id',
-        'subtotal', 'shipping_amount', 'discount_amount', 'grand_total', 'total_paid',
-        'customer_email', 'customer_first_name', 'customer_last_name', 'customer_note', 'referer', 'remote_ip',
+        'order_number', 'status', 'payment_status', 'payment_method', 'coupon_code', 'customer_id', 'processed_at',
+        'subtotal', 'total_shipping', 'total_discounts', 'grand_total', 'total_paid', 'total_weight', 'tracking_number',
+        'email', 'note', 'landing_site', 'referring_site', 'remote_ip', 'cancel_reason', 'cancelled_at'
     ];
 
-    protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at', 'cancelled_at', 'processed_at'];
 
     public function items()
     {
@@ -39,14 +38,14 @@ class Order extends Model
         return Amount::createBaseAmount($grandTotal);
     }
 
-    public function getDiscountAmountAttribute($discountAmount)
+    public function getTotalDiscountsAttribute($totalDiscounts)
     {
-        return Amount::createBaseAmount($discountAmount);
+        return Amount::createBaseAmount($totalDiscounts);
     }
 
-    public function getShippingAmountAttribute($shippingAmount)
+    public function getTotalShippingAttribute($totalShipping)
     {
-        return Amount::createBaseAmount($shippingAmount);
+        return Amount::createBaseAmount($totalShipping);
     }
 
     public function getTotalPaidAttribute($totalPaid)
@@ -81,9 +80,9 @@ class Order extends Model
         return $this->hasMany(Config::get('sale.order_status_history'), 'order_id');
     }
 
-    public function paypalEvent()
+    public function customer()
     {
-        return $this->hasOne(PayPalEvent::class);
+        return $this->belongsTo(Config::get('sale.customer'), 'customer_id');
     }
 
     public function getStatusTextAttribute()
@@ -108,12 +107,12 @@ class Order extends Model
 
     public function getShippingFirstNameAttribute()
     {
-        return $this->customer_first_name;
+        return $this->customer->first_name;
     }
 
     public function getShippingLastNameAttribute()
     {
-        return $this->customer_last_name;
+        return $this->customer->last_name;
     }
 
     public function getShippingCountryNameAttribute()

@@ -13,6 +13,8 @@ return [
 
     'order_shipping' => 'Viviniko\Sale\Models\OrderShipping',
 
+    'customer' => 'Viviniko\Customer\Models\Customer',
+
     /*
     |--------------------------------------------------------------------------
     | Sale Order Table

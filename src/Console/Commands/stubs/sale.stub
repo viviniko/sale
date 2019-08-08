@@ -65,19 +65,22 @@ class CreateSaleTable extends Migration
             $table->string('payment_status', 32)->nullable();
             $table->string('payment_method', 32)->nullable();
             $table->string('coupon_code', 32)->nullable();
-            $table->decimal('subtotal', 16, 4);
-            $table->decimal('shipping_amount', 16, 4)->default(0);
-            $table->decimal('discount_amount', 16, 4)->default(0);
-            $table->decimal('grand_total', 16, 4);
-            $table->decimal('total_paid', 16, 4)->default(0);
+            $table->decimal('subtotal', 16, 2);
+            $table->decimal('total_shipping', 16, 2)->default(0);
+            $table->decimal('total_discounts', 16, 2)->default(0);
+            $table->decimal('grand_total', 16, 2);
+            $table->decimal('total_paid', 16, 2)->default(0);
+            $table->unsignedInteger('total_weight')->default(0);
             $table->unsignedInteger('customer_id')->default(0);
-            $table->string('customer_email')->nullable();
-            $table->string('customer_first_name')->nullable();
-            $table->string('customer_last_name')->nullable();
-            $table->string('customer_note', 765)->nullable();
-            $table->string('referer')->nullable();
-            $table->string('remote_ip', '64');
+            $table->string('email')->nullable();
+            $table->text('note')->nullable();
+            $table->timestamp('processed_at')->nullable();
             $table->string('tracking_number')->nullable();
+            $table->string("cancel_reason")->nullable();
+            $table->timestamp('cancelled_at ')->nullable();
+            $table->string('landing_site')->nullable();
+            $table->string('referring_site')->nullable();
+            $table->string('remote_ip', '64');
             $table->timestamps();
             $table->softDeletes();
 
@@ -90,13 +93,13 @@ class CreateSaleTable extends Migration
             $table->unsignedInteger('order_id');
             $table->unsignedInteger('product_id');
             $table->unsignedInteger('item_id');
-            $table->decimal('subtotal', 16, 4);
-            $table->decimal('amount', 16, 4);
-            $table->unsignedTinyInteger('discount');
+            $table->decimal('price', 16, 2);
+            $table->decimal('total_discount', 16, 2);
             $table->unsignedSmallInteger('quantity');
             $table->string('name');
             $table->string('sku', 32);
-            $table->string('description');
+            $table->unsignedInteger('weight')->default(0);
+            $table->string('specs');
         });
 
         // Create table for storing orders
@@ -119,10 +122,10 @@ class CreateSaleTable extends Migration
         Schema::create($this->orderShippingTable, function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('order_id');
-            $table->unsignedInteger('shipping_method_id');
-            $table->string('shipping_country', 2);
-            $table->decimal('shipping_weight', 16, 4);
-            $table->decimal('shipping_cost', 16, 4);
+            $table->string('shipping_method');
+            $table->string('country', 2);
+            $table->decimal('price', 16, 2);
+            $table->decimal('total_discount', 16, 2)->default(0);
         });
 
         // Create table for storing orders

@@ -3,7 +3,6 @@
 namespace Viviniko\Sale\Models;
 
 use Viviniko\Currency\Amount;
-use Viviniko\Shipping\Models\ShippingMethod;
 use Viviniko\Support\Database\Eloquent\Model;
 
 class OrderShipping extends Model
@@ -13,22 +12,22 @@ class OrderShipping extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'shipping_method_id', 'shipping_country', 'shipping_cost', 'shipping_weight'
+        'order_id', 'shipping_method', 'country', 'price', 'total_discount',
     ];
 
-    public function getShippingCostAttribute($shippingCost)
+    public function getPriceAttribute($price)
     {
-        return Amount::createBaseAmount($shippingCost);
+        return Amount::createBaseAmount($price);
+    }
+
+    public function getTotalDiscountAttribute($totalDiscount)
+    {
+        return Amount::createBaseAmount($totalDiscount);
     }
 
     public function order()
     {
         return $this->belongsTo(Order::class, 'order_id');
-    }
-
-    public function shippingMethod()
-    {
-        return $this->belongsTo(ShippingMethod::class, 'shipping_method_id');
     }
 
 }

@@ -13,11 +13,11 @@ class OrderItem extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'order_id', 'product_id', 'item_id', 'subtotal', 'amount', 'discount', 'quantity', 'name', 'sku', 'description'
+        'order_id', 'product_id', 'item_id', 'price', 'total_discount', 'quantity', 'name', 'sku', 'specs', 'weight'
     ];
 
     protected $appends = [
-        'cover', 'url'
+        'url'
     ];
 
     protected $hidden = [
@@ -25,17 +25,17 @@ class OrderItem extends Model
     ];
 
     protected $casts = [
-        'description' => 'array',
+        'specs' => 'array',
     ];
 
-    public function getSubtotalAttribute($subtotal)
+    public function getPriceAttribute($price)
     {
-        return Amount::createBaseAmount($subtotal);
+        return Amount::createBaseAmount($price);
     }
 
-    public function getAmountAttribute($amount)
+    public function getTotalDiscountAttribute($totalDiscount)
     {
-        return Amount::createBaseAmount($amount);
+        return Amount::createBaseAmount($totalDiscount);
     }
 
     public function order()
@@ -63,8 +63,8 @@ class OrderItem extends Model
         return data_get($this->product, 'url');
     }
 
-    public function getCoverAttribute()
+    public function getImageAttribute()
     {
-        return data_get($this->item, 'cover');
+        return data_get($this->item, 'image');
     }
 }
