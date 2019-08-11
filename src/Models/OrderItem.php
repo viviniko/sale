@@ -33,6 +33,11 @@ class OrderItem extends Model
         return Amount::createBaseAmount($price);
     }
 
+    public function getSubtotalAttribute()
+    {
+        return $this->price->mul($this->quantity);
+    }
+
     public function getTotalDiscountAttribute($totalDiscount)
     {
         return Amount::createBaseAmount($totalDiscount);
