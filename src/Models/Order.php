@@ -4,7 +4,7 @@ namespace Viviniko\Sale\Models;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Config;
-use Viviniko\Currency\Amount;
+use Viviniko\Currency\Money;
 use Viviniko\Sale\Enums\OrderStatus;
 use Viviniko\Sale\Enums\PaymentStatus;
 use Viviniko\Support\Database\Eloquent\Model;
@@ -30,27 +30,27 @@ class Order extends Model
     
     public function getSubtotalAttribute($subtotal)
     {
-        return Amount::createBaseAmount($subtotal);
+        return Money::create($subtotal);
     }
 
     public function getGrandTotalAttribute($grandTotal)
     {
-        return Amount::createBaseAmount($grandTotal);
+        return Money::create($grandTotal);
     }
 
     public function getTotalDiscountsAttribute($totalDiscounts)
     {
-        return Amount::createBaseAmount($totalDiscounts);
+        return Money::create($totalDiscounts);
     }
 
     public function getTotalShippingAttribute($totalShipping)
     {
-        return Amount::createBaseAmount($totalShipping);
+        return Money::create($totalShipping);
     }
 
     public function getTotalPaidAttribute($totalPaid)
     {
-        return Amount::createBaseAmount($totalPaid);
+        return Money::create($totalPaid);
     }
 
     public function getProductDetailsAttribute()

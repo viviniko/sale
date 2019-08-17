@@ -2,7 +2,7 @@
 
 namespace Viviniko\Sale\Models;
 
-use Viviniko\Currency\Amount;
+use Viviniko\Currency\Money;
 use Viviniko\Support\Database\Eloquent\Model;
 
 class OrderShipping extends Model
@@ -17,12 +17,12 @@ class OrderShipping extends Model
 
     public function getPriceAttribute($price)
     {
-        return Amount::createBaseAmount($price);
+        return Money::create($price);
     }
 
     public function getTotalDiscountAttribute($totalDiscount)
     {
-        return Amount::createBaseAmount($totalDiscount);
+        return Money::create($totalDiscount);
     }
 
     public function order()
