@@ -23,16 +23,6 @@ class OrderAddress extends Model
         return $this->belongsTo(Order::class, 'order_id');
     }
 
-    public function getFirstnameAttribute()
-    {
-        return explode(' ', $this->name)[0];
-    }
-
-    public function getLastnameAttribute()
-    {
-        return strpos($this->name, ' ') ? explode(' ', $this->name, 2)[1] : '';
-    }
-
     public function getReadableAttribute()
     {
         $splices = collect([]);
