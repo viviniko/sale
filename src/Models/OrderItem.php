@@ -3,7 +3,7 @@
 namespace Viviniko\Sale\Models;
 
 use Illuminate\Support\Facades\Config;
-use Viviniko\Currency\Amount;
+use Viviniko\Currency\Money;
 use Viviniko\Support\Database\Eloquent\Model;
 
 class OrderItem extends Model
@@ -30,12 +30,17 @@ class OrderItem extends Model
 
     public function getPriceAttribute($price)
     {
-        return Amount::createBaseAmount($price);
+        return Money::create($price);
+    }
+
+    public function getSubtotalAttribute()
+    {
+        return $this->price->mul($this->quantity);
     }
 
     public function getTotalDiscountAttribute($totalDiscount)
     {
-        return Amount::createBaseAmount($totalDiscount);
+        return Money::create($totalDiscount);
     }
 
     public function order()
