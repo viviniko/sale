@@ -11,9 +11,8 @@
         }
     ],
     "require": {
-        "php": ">=7.0",
+        "php": "^7.2",
         "viviniko/address": "dev-master",
-        "viviniko/agent": "dev-master",
         "viviniko/catalog": "dev-master",
         "viviniko/cart": "dev-master",
         "viviniko/customer": "dev-master",
