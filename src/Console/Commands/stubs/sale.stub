@@ -76,8 +76,8 @@ class CreateSaleTable extends Migration
             $table->text('note')->nullable();
             $table->timestamp('processed_at')->nullable();
             $table->string('tracking_number')->nullable();
-            $table->string("cancel_reason")->nullable();
-            $table->timestamp('cancelled_at ')->nullable();
+            $table->string('cancel_reason')->nullable();
+            $table->timestamp('cancelled_at')->nullable();
             $table->string('landing_site')->nullable();
             $table->string('referring_site')->nullable();
             $table->string('remote_ip', '64');
